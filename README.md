@@ -60,3 +60,4 @@ against a MariaDB database. It exposes a FastAPI `/analyze` endpoint and include
 # project-2
 # project-2
 # project-2
+# project-2
