@@ -16,4 +16,5 @@ print("Status:", r.status_code)
 try:
     print(json.dumps(r.json(), indent=2, default=str))
 except Exception:
+    
     print(r.text)
