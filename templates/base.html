@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryVault - {% block title %}AI-Powered DB Optimization{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='/'" style="cursor: pointer;">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">QueryVault</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/studio" class="nav-link">Studio</a></li>
+                <li><a href="/vault" class="nav-link">The Vault</a></li>
+                <li><a href="/about" class="nav-link">Developers</a></li>
+                {% if user %}
+                    <li style="margin-left: 10px;"><span style="color: var(--accent-cyan); font-weight: bold;">[ {{ user.full_name }} ]</span></li>
+                    <li><a href="/auth/logout" class="nav-link" style="color: var(--danger-color);">Logout</a></li>
+                {% else %}
+                    <li><a href="/login" class="nav-link">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">Engineered with precision using FastAPI + MariaDB + Groq AI</p>
+            <p class="footer-version">QueryVault Enterprise • v1.2 • <a href="/about" style="color: var(--primary-blue); text-decoration: none;">Meet the Devs</a></p>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

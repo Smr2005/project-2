@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}The Vault{% endblock %}
+
+{% block head %}
+<style>
+    .vault-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    .guide-card {
+        background: rgba(0, 217, 255, 0.05);
+        border: 1px dashed var(--primary-blue);
+        border-radius: 12px;
+        padding: 1.5rem;
+    }
+    .step-number {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: var(--primary-blue);
+        color: var(--darker-bg);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 24px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="hero">
+    <h1 class="hero-title">🔐 The Vault</h1>
+    <p class="hero-subtitle">Zero-Knowledge Credential Management. Your keys, your data, your control.</p>
+</header>
+
+<div class="vault-grid">
+    <div class="onboarding">
+        <h2 class="section-title" style="text-align: left; font-size: 1.5rem;">New Deployment?</h2>
+        
+        <div class="guide-card">
+            <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">🏠 Local Database (ngrok)</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem;">To connect your local MariaDB to this cloud instance:</p>
+            <ol style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">1</span> Download <a href="https://ngrok.com" style="color: var(--accent-cyan);">ngrok</a></li>
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">2</span> Run <code>ngrok tcp 3306</code></li>
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">3</span> Copy the forwarding address (e.g., <code>0.tcp.ngrok.io:12345</code>)</li>
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">4</span> Use <code>0.tcp.ngrok.io</code> as Host and <code>12345</code> as Port in Studio.</li>
+            </ol>
+        </div>
+
+        <div class="guide-card" style="margin-top: 1.5rem;">
+            <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">🛡️ Production SSH Tunnel</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem;">For secure enterprise connections without ngrok:</p>
+            <ol style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">1</span> Enable <strong>Use SSH Tunnel</strong> in Studio</li>
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">2</span> Enter your SSH Host and User</li>
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">3</span> Provide Password or Private Key</li>
+                <li style="margin-bottom: 0.5rem;"><span class="step-number">4</span> We'll handle the <code>L3306:localhost:3306</code> mapping automatically.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="management">
+        <h2 class="section-title" style="text-align: left; font-size: 1.5rem;">Saved Credentials</h2>
+        
+        <div class="connection-box">
+            <div class="input-group">
+                <label for="master_pass">Master Password</label>
+                <input type="password" id="master_pass" placeholder="Unlock your encrypted secrets">
+            </div>
+            
+            <div id="vault-list" style="margin-top: 2rem;">
+                <p style="color: var(--text-secondary); text-align: center;">Enter your master password to list saved connections.</p>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                <button id="load_vault" class="btn btn-primary" style="flex: 1;">Unlock Vault</button>
+                <button onclick="window.location.href='/studio'" class="btn btn-secondary" style="flex: 1;">Add New</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

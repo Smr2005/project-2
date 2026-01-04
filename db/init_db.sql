@@ -5,10 +5,16 @@ DROP DATABASE IF EXISTS testdb;
 CREATE DATABASE testdb;
 USE testdb;
 
--- Create user (if not exists) for both localhost and 127.0.0.1
+-- Create user (if not exists) and force update password
 CREATE USER IF NOT EXISTS 'appuser'@'127.0.0.1' IDENTIFIED BY 'app_pass123';
+ALTER USER 'appuser'@'127.0.0.1' IDENTIFIED BY 'app_pass123';
+
 CREATE USER IF NOT EXISTS 'appuser'@'localhost' IDENTIFIED BY 'app_pass123';
+ALTER USER 'appuser'@'localhost' IDENTIFIED BY 'app_pass123';
+
 CREATE USER IF NOT EXISTS 'appuser'@'%' IDENTIFIED BY 'app_pass123';
+ALTER USER 'appuser'@'%' IDENTIFIED BY 'app_pass123';
+
 GRANT ALL PRIVILEGES ON testdb.* TO 'appuser'@'127.0.0.1';
 GRANT ALL PRIVILEGES ON testdb.* TO 'appuser'@'localhost';
 GRANT ALL PRIVILEGES ON testdb.* TO 'appuser'@'%';

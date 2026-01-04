@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Intelligence for Databases{% endblock %}
+
+{% block content %}
+<header class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">AI-Powered Database Query Optimization</h1>
+        <p class="hero-subtitle">Unlock the full potential of your MariaDB queries with intelligent analysis, real-time recommendations, and AI-driven insights.</p>
+        
+        <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center;">
+            <a href="/studio" class="btn btn-primary" style="text-decoration: none;">
+                <span class="btn-icon">⚡</span> Enter Analysis Studio
+            </a>
+            <a href="/vault" class="btn btn-secondary" style="text-decoration: none;">
+                <span class="btn-icon">🔐</span> Open The Vault
+            </a>
+        </div>
+    </div>
+    <div class="hero-glow"></div>
+</header>
+
+<section class="features-section">
+    <h2 class="section-title">Why Professionals Choose QueryVault</h2>
+    <div class="features-grid">
+        <article class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">Enterprise Security</h3>
+            <p class="feature-text">Connect directly or via encrypted SSH tunnels. Multi-layer security ensures your data stays private.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3 class="feature-title">Agentic AI</h3>
+            <p class="feature-text">Not just a wrapper. Specialized agents working in parallel to optimize every aspect of your SQL.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <h3 class="feature-title">Personal Vault</h3>
+            <p class="feature-text">Your connection identities are saved in your personal encrypted vault for instant recall.</p>
+        </article>
+    </div>
+</section>
+
+{% if not user %}
+<section id="auth-cta" class="connection-box" style="max-width: 600px; margin: 4rem auto; text-align: center;">
+    <h3 class="input-label">Ready to Optimize?</h3>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Join thousands of developers using AI to speed up their infrastructure.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="/register" class="btn btn-primary">Create Free Account</a>
+        <a href="/login" class="btn btn-secondary">Initialize Session</a>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

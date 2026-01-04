@@ -2,75 +2,294 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>MariaDB Query Optimizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueryVault - AI-Powered Database Optimization</title>
   <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>⚡ MariaDB Query Optimizer — AI Agents</h1>
-      <p>Paste your SQL, run the analysis, and see AI-powered insights instantly.</p>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">QueryVault</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="#analyze" class="nav-link">Analyze</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">AI-Powered Database Query Optimization</h1>
+        <p class="hero-subtitle">Unlock the full potential of your MariaDB queries with intelligent analysis, real-time recommendations, and AI-driven insights.</p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">4</span>
+            <span class="stat-label">AI Agents</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Safe Mode</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">Real-time</span>
+            <span class="stat-label">Analysis</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-glow"></div>
     </header>
 
     <main>
-      <section class="input-box">
-        <textarea id="sql" placeholder="Paste SQL query here..."></textarea>
-        <div class="controls">
-          <select id="sandbox">
-            <option value="true">Run in Sandbox (Safe)</option>
-            <option value="false">Run in Production</option>
-          </select>
-          <button id="run">▶ Run Analysis</button>
-          <button id="clear">✖ Clear</button>
-          <button onclick="analyzeSchema()">🔍 Analyze Schema</button>
-          <div id="schema-results"></div>
+      <section id="analyze" class="analyze-section">
+        <h2 class="section-title">Query Analysis Studio</h2>
+        <div class="analyze-container">
+          <div class="connection-box">
+            <h3 class="input-label">Database Connection</h3>
+            <div class="connection-grid">
+              <div class="input-group">
+                <label for="db_host">Host</label>
+                <input type="text" id="db_host" placeholder="127.0.0.1" value="127.0.0.1">
+              </div>
+              <div class="input-group">
+                <label for="db_port">Port</label>
+                <input type="number" id="db_port" placeholder="3306" value="3306">
+              </div>
+              <div class="input-group">
+                <label for="db_user">User</label>
+                <input type="text" id="db_user" placeholder="root" value="appuser">
+              </div>
+              <div class="input-group">
+                <label for="db_pass">Password</label>
+                <input type="password" id="db_pass" placeholder="********" value="app_pass123">
+              </div>
+              <div class="input-group">
+                <label for="db_name">Database</label>
+                <input type="text" id="db_name" placeholder="test_db" value="testdb">
+              </div>
+            </div>
+
+            <div class="ssh-toggle-container">
+              <label class="ssh-toggle">
+                <input type="checkbox" id="use_ssh">
+                <span class="ssh-toggle-label">🛡️ Use SSH Tunnel</span>
+              </label>
+            </div>
+
+            <div id="ssh-config" class="connection-grid hidden" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+              <div class="input-group">
+                <label for="ssh_host">SSH Host</label>
+                <input type="text" id="ssh_host" placeholder="ssh.example.com">
+              </div>
+              <div class="input-group">
+                <label for="ssh_port">SSH Port</label>
+                <input type="number" id="ssh_port" placeholder="22" value="22">
+              </div>
+              <div class="input-group">
+                <label for="ssh_user">SSH User</label>
+                <input type="text" id="ssh_user" placeholder="ubuntu">
+              </div>
+              <div class="input-group">
+                <label for="ssh_pass">SSH Password</label>
+                <input type="password" id="ssh_pass" placeholder="********">
+              </div>
+              <div class="input-group full-width" style="grid-column: span 2;">
+                <label for="ssh_key">SSH Private Key (Optional)</label>
+                <textarea id="ssh_key" placeholder="-----BEGIN OPENSSH PRIVATE KEY-----..." style="height: 100px; font-family: monospace;"></textarea>
+              </div>
+            </div>
+
+            <div class="vault-container" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+              <h3 class="input-label" style="display: flex; align-items: center; gap: 0.5rem;">
+                <span>🔐 The Vault</span>
+                <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 400;">(Zero-Knowledge Storage)</span>
+              </h3>
+              <div class="connection-grid">
+                <div class="input-group">
+                  <label for="master_pass">Master Password</label>
+                  <input type="password" id="master_pass" placeholder="Your vault secret key">
+                </div>
+                <div class="input-group" style="justify-content: flex-end;">
+                  <div style="display: flex; gap: 0.5rem;">
+                    <button id="save_vault" class="btn btn-secondary" style="flex: 1;">
+                      <span>💾 Save to Vault</span>
+                    </button>
+                    <button id="load_vault" class="btn btn-tertiary" style="flex: 1;">
+                      <span>🔓 Load from Vault</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="input-box">
+            <label for="sql" class="input-label">Paste Your SQL Query</label>
+            <textarea id="sql" class="query-input" placeholder="SELECT * FROM users WHERE status = 'active' LIMIT 100;"></textarea>
+            <div class="controls">
+              <div class="control-group">
+                <label for="sandbox" class="control-label">Mode:</label>
+                <select id="sandbox" class="control-select">
+                  <option value="true">🛡️ Sandbox (Safe)</option>
+                  <option value="false">⚙️ Production</option>
+                </select>
+              </div>
+              <button id="run" class="btn btn-primary">
+                <span class="btn-icon">⚡</span> Analyze Query
+              </button>
+              <button id="clear" class="btn btn-secondary">
+                <span class="btn-icon">↻</span> Clear
+              </button>
+              <button onclick="analyzeSchema()" class="btn btn-tertiary">
+                <span class="btn-icon">🔍</span> Schema
+              </button>
+            </div>
+            <div id="schema-results" class="schema-results"></div>
+          </div>
         </div>
       </section>
 
-      <section id="message" class="hidden"></section>
+      <section id="message" class="message-container hidden"></section>
 
-      <section id="results" class="hidden">
-        <div class="card">
+      <section id="results" class="results-section hidden">
+        <div class="results-header">
+          <h2 class="results-title">Analysis Results</h2>
+          <div class="results-timeline"></div>
+        </div>
+
+        <div class="card card-summary">
           <div id="summary"></div>
         </div>
 
-        <div class="card">
-          <h2>✅ Query Optimization</h2>
-          <div id="opt-query"></div>
-        </div>
+        <div class="cards-grid">
+          <div class="card card-optimization">
+            <div class="card-header">
+              <h3 class="card-title">✅ Query Optimization</h3>
+              <span class="card-badge">Query</span>
+            </div>
+            <div id="opt-query" class="card-content"></div>
+          </div>
 
-        <div class="card">
-          <h2>💡 Recommendations & Impact</h2>
-          <h3>Optimization Tips</h3>
-          <div id="recommendations"></div>
-          <h3>⚠️ Warnings</h3>
-          <div id="warnings"></div>
-          <h3>📈 Performance Impact</h3>
-          <div id="impact"></div>
-        </div>
+          <div class="card card-recommendations">
+            <div class="card-header">
+              <h3 class="card-title">💡 Recommendations</h3>
+              <span class="card-badge">Insights</span>
+            </div>
+            <div class="card-content">
+              <div class="subsection">
+                <h4 class="subsection-title">Optimization Tips</h4>
+                <div id="recommendations" class="subsection-content"></div>
+              </div>
+              <div class="subsection">
+                <h4 class="subsection-title">⚠️ Warnings</h4>
+                <div id="warnings" class="subsection-content"></div>
+              </div>
+              <div class="subsection">
+                <h4 class="subsection-title">📈 Performance Impact</h4>
+                <div id="impact" class="subsection-content"></div>
+              </div>
+            </div>
+          </div>
 
-        <div class="card">
-          <h2>🤖 AI Agent Analysis</h2>
-          <div id="ai-notes"></div>
-        </div>
+          <div class="card card-ai">
+            <div class="card-header">
+              <h3 class="card-title">🤖 AI Analysis</h3>
+              <span class="card-badge">Intelligence</span>
+            </div>
+            <div id="ai-notes" class="card-content"></div>
+          </div>
 
-        <div class="card">
-          <h2>🛠️ Technical Details</h2>
-          <h3>EXPLAIN Plan</h3>
-          <div id="plan"></div>
-          <h3>Sample Results</h3>
-          <div id="rows"></div>
-        </div>
+          <div class="card card-technical">
+            <div class="card-header">
+              <h3 class="card-title">🛠️ Technical Details</h3>
+              <span class="card-badge">Advanced</span>
+            </div>
+            <div class="card-content">
+              <div class="subsection">
+                <h4 class="subsection-title">EXPLAIN Plan</h4>
+                <div id="plan" class="subsection-content"></div>
+              </div>
+              <div class="subsection">
+                <h4 class="subsection-title">Sample Results</h4>
+                <div id="rows" class="subsection-content"></div>
+              </div>
+            </div>
+          </div>
 
-        <div class="card">
-          <h2>📊 Schema Context</h2>
-          <div id="raw"></div>
+          <div class="card card-schema">
+            <div class="card-header">
+              <h3 class="card-title">📊 Schema Context</h3>
+              <span class="card-badge">Database</span>
+            </div>
+            <div id="raw" class="card-content"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features-section">
+        <h2 class="section-title">Why QueryVault?</h2>
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Lightning Fast</h3>
+            <p class="feature-text">Real-time query analysis with instant AI-powered insights. No waiting, no delays.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3 class="feature-title">4 AI Agents</h3>
+            <p class="feature-text">Query Optimizer, Cost Advisor, Schema Expert, and Data Validator working in harmony.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">100% Safe</h3>
+            <p class="feature-text">Sandbox mode ensures zero risk. Execute queries safely with complete protection.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">Deep Analytics</h3>
+            <p class="feature-text">EXPLAIN plans, performance metrics, and cost estimation at your fingertips.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3 class="feature-title">Schema Intelligence</h3>
+            <p class="feature-text">Intelligent schema analysis with automated recommendations for better design.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3 class="feature-title">Production Ready</h3>
+            <p class="feature-text">Enterprise-grade optimization for mission-critical database performance.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="about-section">
+        <h2 class="section-title">About QueryVault</h2>
+        <div class="about-content">
+          <article class="about-card">
+            <h3 class="about-title">Powered by Advanced AI</h3>
+            <p>QueryVault leverages cutting-edge AI agents and machine learning to analyze your database queries comprehensively. Each query is examined through multiple lenses: optimization potential, execution cost, schema design, and data validation.</p>
+          </article>
+          <article class="about-card">
+            <h3 class="about-title">Built for Developers</h3>
+            <p>Whether you're a database architect, developer, or DevOps engineer, QueryVault provides actionable insights that directly improve query performance and reduce infrastructure costs. Integration with FastAPI and MariaDB ensures seamless workflow.</p>
+          </article>
+          <article class="about-card">
+            <h3 class="about-title">Enterprise Features</h3>
+            <p>Multi-mode operation, comprehensive EXPLAIN analysis, sample data validation, and cost estimation empower teams to make data-driven optimization decisions with confidence.</p>
+          </article>
         </div>
       </section>
     </main>
 
-    <footer>
-      <p>Built with ❤️ using FastAPI + MariaDB + Groq AI</p>
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="footer-text">Engineered with precision using FastAPI + MariaDB + Groq AI</p>
+        <p class="footer-version">QueryVault Enterprise • v1.0</p>
+      </div>
     </footer>
   </div>
 

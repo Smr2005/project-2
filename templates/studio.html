@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Studio - AI Optimizer{% endblock %}
+
+{% block content %}
+<section id="analyze" class="analyze-section">
+    <h2 class="section-title">Query Analysis Studio</h2>
+    <div class="analyze-container">
+      <div class="connection-box">
+        <h3 class="input-label">Database Connection</h3>
+        <div class="connection-grid">
+          <div class="input-group">
+            <label for="db_host">Host</label>
+            <input type="text" id="db_host" placeholder="127.0.0.1" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="db_port">Port</label>
+            <input type="number" id="db_port" placeholder="3306" value="3306" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="db_user">User</label>
+            <input type="text" id="db_user" placeholder="root" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="db_pass">Password</label>
+            <input type="password" id="db_pass" placeholder="********" autocomplete="new-password">
+          </div>
+          <div class="input-group">
+            <label for="db_name">Database</label>
+            <input type="text" id="db_name" placeholder="test_db" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="ssh-toggle-container">
+          <label class="ssh-toggle">
+            <input type="checkbox" id="use_ssh">
+            <span class="ssh-toggle-label">🛡️ Use SSH Tunnel</span>
+          </label>
+        </div>
+
+        <div id="ssh-config" class="connection-grid hidden" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <div class="input-group">
+            <label for="ssh_host">SSH Host</label>
+            <input type="text" id="ssh_host" placeholder="ssh.example.com" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="ssh_port">SSH Port</label>
+            <input type="number" id="ssh_port" placeholder="22" value="22" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="ssh_user">SSH User</label>
+            <input type="text" id="ssh_user" placeholder="ubuntu" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="ssh_pass">SSH Password</label>
+            <input type="password" id="ssh_pass" placeholder="********" autocomplete="new-password">
+          </div>
+          <div class="input-group full-width" style="grid-column: span 2;">
+            <label for="ssh_key">SSH Private Key (Optional)</label>
+            <textarea id="ssh_key" placeholder="-----BEGIN OPENSSH PRIVATE KEY-----..." style="height: 100px; font-family: monospace;" autocomplete="off"></textarea>
+          </div>
+        </div>
+
+        <div class="vault-container" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h3 class="input-label" style="display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔐 The Vault</span>
+            <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 400;">(Save current config)</span>
+          </h3>
+          <div class="connection-grid">
+            <div class="input-group">
+              <label for="master_pass">Master Password</label>
+              <input type="password" id="master_pass" placeholder="Encrypt and save locally" autocomplete="new-password">
+            </div>
+          <div class="input-group" style="justify-content: flex-end; display: flex; gap: 1rem; grid-column: span 2;">
+            <button id="load_vault" class="btn btn-primary">
+              <span>🔓 Unlock Vault</span>
+            </button>
+            <button id="save_vault" class="btn btn-secondary">
+              <span>💾 Save to Vault</span>
+            </button>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label for="sql" class="input-label">Paste Your SQL Query</label>
+        <textarea id="sql" class="query-input" placeholder="SELECT * FROM users WHERE status = 'active' LIMIT 100;"></textarea>
+        <div class="controls">
+          <div class="control-group">
+            <label for="sandbox" class="control-label">Mode:</label>
+            <select id="sandbox" class="control-select">
+              <option value="true">🛡️ Sandbox (Safe)</option>
+              <option value="false">⚙️ Production</option>
+            </select>
+          </div>
+          <button id="run" class="btn btn-primary">
+            <span class="btn-icon">⚡</span> Analyze Query
+          </button>
+          <button id="clear" class="btn btn-secondary">
+            <span class="btn-icon">↻</span> Clear
+          </button>
+          <button onclick="analyzeSchema()" class="btn btn-tertiary">
+            <span class="btn-icon">🔍</span> Schema
+          </button>
+        </div>
+        <div id="schema-results" class="schema-results"></div>
+      </div>
+    </div>
+</section>
+
+<section id="message" class="message-container hidden"></section>
+
+<section id="results" class="results-section hidden">
+    <div class="results-header">
+      <h2 class="results-title">Analysis Results</h2>
+    </div>
+
+    <div class="card card-summary">
+      <div id="summary"></div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card card-optimization">
+        <div class="card-header">
+          <h3 class="card-title">✅ Query Optimization</h3>
+        </div>
+        <div id="opt-query" class="card-content"></div>
+      </div>
+
+      <div class="card card-recommendations">
+        <div class="card-header">
+          <h3 class="card-title">💡 Recommendations</h3>
+        </div>
+        <div class="card-content">
+          <div id="recommendations"></div>
+          <div id="warnings"></div>
+          <div id="impact"></div>
+        </div>
+      </div>
+
+      <div class="card card-ai">
+        <div class="card-header">
+          <h3 class="card-title">🤖 AI Analysis</h3>
+        </div>
+        <div id="ai-notes" class="card-content"></div>
+      </div>
+
+      <div class="card card-technical">
+        <div class="card-header">
+          <h3 class="card-title">🛠️ Technical Details</h3>
+        </div>
+        <div class="card-content">
+            <div id="plan"></div>
+            <div id="rows"></div>
+        </div>
+      </div>
+
+      <div class="card card-schema">
+        <div class="card-header">
+          <h3 class="card-title">📊 Schema Context</h3>
+        </div>
+        <div id="raw" class="card-content"></div>
+      </div>
+    </div>
+</section>
+{% endblock %}

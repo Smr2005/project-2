@@ -1,6 +1,7 @@
 import asyncio
 import aiomysql
 import sys
+import os
 
 async def run_init_script():
     try:
@@ -17,13 +18,13 @@ async def run_init_script():
         
         async with pool.acquire() as conn:
             async with conn.cursor() as cur:
-                print("Connected to MariaDB")
+                print("✓ Connected to MariaDB")
                 
                 await cur.execute("DROP DATABASE IF EXISTS testdb")
-                print("Dropped old testdb")
+                print("✓ Dropped old testdb")
                 
                 await cur.execute("CREATE DATABASE testdb")
-                print("Created testdb database")
+                print("✓ Created testdb database")
                 
         await asyncio.sleep(0.5)
         
@@ -31,7 +32,8 @@ async def run_init_script():
             async with conn.cursor() as cur:
                 await cur.execute("USE testdb")
                 
-                with open("db/init_db.sql", "r") as f:
+                sql_path = os.path.join(os.path.dirname(__file__), "db", "init_db.sql")
+                with open(sql_path, "r") as f:
                     script = f.read()
                 
                 for statement in script.split(";"):
@@ -42,16 +44,16 @@ async def run_init_script():
                         except Exception as e:
                             print(f"  Warning: {e}")
                 
-                print("Initialized database schema and data")
+                print("✓ Initialized database schema and data")
         
         pool.close()
         await pool.wait_closed()
         
-        print("\nDatabase initialized successfully!")
+        print("\n✓ Database initialized successfully!")
         return True
         
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"✗ Error: {e}")
         import traceback
         traceback.print_exc()
         return False

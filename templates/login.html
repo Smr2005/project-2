@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Login - QueryVault Access{% endblock %}
+
+{% block content %}
+<section class="connection-box" style="max-width: 450px; margin: 6rem auto;" data-aos="zoom-in">
+    <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 2rem;">System Authentication</h2>
+    
+    <div id="auth-error" class="message-container error hidden" style="margin-bottom: 1.5rem;"></div>
+
+    <form id="login-form">
+        <div class="input-group">
+            <label for="email">Neural Identity (Email)</label>
+            <input type="email" id="email" name="email" placeholder="agent@queryvault.io" required>
+        </div>
+        
+        <div class="input-group" style="margin-top: 1.5rem;">
+            <label for="password">Access Key (Password)</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <div style="margin-top: 1rem; text-align: right;">
+            <a href="/forgot-password" style="color: var(--text-secondary); font-size: 0.8rem; text-decoration: none;">Forgot Access Key?</a>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <span class="btn-icon">⚡</span> Initialize Session
+            </button>
+        </div>
+    </form>
+
+    <p style="margin-top: 2rem; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+        New Agent? <a href="/register" style="color: var(--primary-blue); font-weight: bold; text-decoration: none;">Register Identity</a>
+    </p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('login-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorEl = document.getElementById('auth-error');
+
+        try {
+            const formData = new FormData();
+            formData.append('username', email); // FastAPI OAuth2 expects 'username'
+            formData.append('password', password);
+
+            const resp = await fetch('/auth/login', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (resp.ok) {
+                window.location.href = '/studio';
+            } else {
+                const data = await resp.json();
+                errorEl.textContent = data.detail || 'Access Denied: Invalid Credentials';
+                errorEl.classList.remove('hidden');
+            }
+        } catch (err) {
+            errorEl.textContent = 'Connection Error: Secure channel failed';
+            errorEl.classList.remove('hidden');
+        }
+    };
+</script>
+{% endblock %}

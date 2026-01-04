@@ -13,15 +13,15 @@ class MariaDBClient:
         self.port = port
         self.pool = None
 
-    async def connect(self):
+    async def connect(self, host=None, port=None):
         if self.pool is None:
             try:
                 self.pool = await aiomysql.create_pool(
-                    host=self.host,
+                    host=host or self.host,
                     user=self.user,
                     password=self.password,
                     db=self.database,
-                    port=self.port,
+                    port=port or self.port,
                     autocommit=True,
                     connect_timeout=10,
                 )

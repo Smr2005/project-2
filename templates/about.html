@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Meet the Developers{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+<style>
+    .dev-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    .dev-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+    .dev-card:hover {
+        border-color: var(--primary-blue);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 217, 255, 0.15);
+    }
+    .dev-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-blue);
+        margin-bottom: 1.5rem;
+        object-fit: cover;
+    }
+    .dev-name {
+        color: var(--primary-blue);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .dev-role {
+        color: var(--accent-cyan);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+    }
+    .dev-desc {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    .skill-badge {
+        background: rgba(0, 217, 255, 0.1);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        color: var(--primary-blue);
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+    .team-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .badge-backend { background: rgba(0, 217, 255, 0.2); color: var(--primary-blue); }
+    .badge-frontend { background: rgba(0, 255, 224, 0.2); color: var(--accent-cyan); }
+    .badge-devops { background: rgba(160, 174, 192, 0.2); color: var(--text-secondary); }
+    .badge-testing { background: rgba(255, 184, 77, 0.2); color: var(--warning-color); }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="hero" data-aos="fade-up">
+    <h1 class="hero-title">Meet Our Development Team</h1>
+    <p class="hero-subtitle">The visionaries behind QueryVault: A fusion of AI expertise, database architecture, and cutting-edge frontend design.</p>
+</header>
+
+<div class="dev-grid">
+    <!-- Sameer Shaik -->
+    <div class="dev-card" data-aos="fade-up">
+        <span class="team-badge badge-backend">Backend Lead</span>
+        <img src="https://avatars.githubusercontent.com/Smr2005?v=4" class="dev-img" alt="Sameer Shaik">
+        <h3 class="dev-name">Sameer Shaik</h3>
+        <p class="dev-role">Backend Developer & Database Architect</p>
+        <p class="dev-desc">🚀 Passionate about solving real-world problems with AI, IoT, and Deep Learning. Built the complete backend architecture and secure authentication systems.</p>
+        <div class="skills">
+            <span class="skill-badge">Node.js</span>
+            <span class="skill-badge">Python</span>
+            <span class="skill-badge">MariaDB</span>
+            <span class="skill-badge">AI/ML</span>
+        </div>
+    </div>
+
+    <!-- Frontend Team -->
+    <div class="dev-card" data-aos="fade-up" data-aos-delay="100">
+        <span class="team-badge badge-frontend">Frontend Team</span>
+        <div style="display: flex; gap: -20px; margin-bottom: 1.5rem;">
+            <img src="https://avatars.githubusercontent.com/u/164171138?v=4" class="dev-img" style="width: 60px; height: 60px;" alt="S. Suheb">
+            <img src="https://avatars.githubusercontent.com/u/195284097?v=4" class="dev-img" style="width: 60px; height: 60px; margin-left: -15px;" alt="Hima Varshini">
+            <img src="https://avatars.githubusercontent.com/u/192334373?v=4" class="dev-img" style="width: 60px; height: 60px; margin-left: -15px;" alt="J. Pavithra">
+        </div>
+        <h3 class="dev-name">Frontend Squad</h3>
+        <p class="dev-role">S. Suheb, Hima Varshini, J. Pavithra</p>
+        <p class="dev-desc">🎨 Crafting beautiful, intuitive interfaces. Responsible for the cyberpunk aesthetic and seamless user experience across all modules.</p>
+        <div class="skills">
+            <span class="skill-badge">React.js</span>
+            <span class="skill-badge">CSS3</span>
+            <span class="skill-badge">UI/UX</span>
+            <span class="skill-badge">Bootstrap</span>
+        </div>
+    </div>
+
+    <!-- Deployment Team -->
+    <div class="dev-card" data-aos="fade-up" data-aos-delay="200">
+        <span class="team-badge badge-devops">DevOps</span>
+        <img src="https://img.icons8.com/clouds/100/000000/cloud-lighting.png" class="dev-img" alt="Deployment">
+        <h3 class="dev-name">D. Vishnu Vardhan</h3>
+        <p class="dev-role">DevOps Engineer & Cloud Specialist</p>
+        <p class="dev-desc">☁️ Dedicated to cloud infrastructure and seamless deployment. Ensures application scalability and high availability through robust CI/CD.</p>
+        <div class="skills">
+            <span class="skill-badge">AWS</span>
+            <span class="skill-badge">Docker</span>
+            <span class="skill-badge">CI/CD</span>
+            <span class="skill-badge">Monitoring</span>
+        </div>
+    </div>
+
+    <!-- Testing Team -->
+    <div class="dev-card" data-aos="fade-up" data-aos-delay="300">
+        <span class="team-badge badge-testing">QA Lead</span>
+        <img src="https://avatars.githubusercontent.com/u/223649933?v=4" class="dev-img" alt="V. Kowsik Sai">
+        <h3 class="dev-name">V. Kowsik Sai</h3>
+        <p class="dev-role">Quality Assurance Engineer</p>
+        <p class="dev-desc">🔍 Meticulous bug hunter. Conducts comprehensive testing across all modules to ensure a seamless, error-free experience.</p>
+        <div class="skills">
+            <span class="skill-badge">Manual Testing</span>
+            <span class="skill-badge">Bug Tracking</span>
+            <span class="skill-badge">Selenium</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({ duration: 1000, once: true });
+</script>
+{% endblock %}
